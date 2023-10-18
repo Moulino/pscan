@@ -1,4 +1,4 @@
-# Simple scan port
+# Simple port scanner
 Display the opened port for a specific IP host or for all IP hosts within the subnet.
 
 ### Usage

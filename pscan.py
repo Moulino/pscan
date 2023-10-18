@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 import optparse
+import random
 
 import infoports
 import network
@@ -20,6 +21,7 @@ parser = optparse.OptionParser("""
                                 """)
 parser.add_option('-t', '--target', dest="target", help="Adresse ip cible ou sous-réseau au format cidr")
 parser.add_option('-p', '--ports', dest="ports", help="Ports à scanner -p 1-65535")
+parser.add_option('-s', '--shuffle', dest="shuffle", help="Mélanger les ports")
 (options, args) = parser.parse_args()
 
 ip_list = []
@@ -37,7 +39,7 @@ if options.ports:
     if '-' in options.ports:
         begin_port = int(options.ports.split('-')[0])
         end_port = int(options.ports.split('-')[1])
-        ports = range(begin_port, end_port+1)
+        ports = [p for r in range(begin_port, end_port+1)]
     elif ',' in options.ports:
         ports = [int(p) for p in options.ports.strip().split(',')]
     else:
@@ -48,6 +50,10 @@ if options.ports:
         exit(1)
 else:
     ports = range(PORT_DEFAULT_BEGIN, PORT_DEFAULT_END+1)
+    
+if options.shuffle:
+    random.shuffle(ports)
+    
 
 iports = infoports.InfoPorts()
 
